@@ -10,13 +10,14 @@
 #define __ELECTRICITY_MOTORCYCLE_H
 
 #include <iostream>
-
+#include <ncurses.h>
 #include <thread>
 #include <chrono>
-
+#include <string>
 #include <random>
-
-
+#include <iomanip> // Set space width.
+#include <mutex>
+#include <atomic>
 
 using namespace std;
 
@@ -45,7 +46,7 @@ class Battery{
         void setBatteryLevel(int min, int max, int current);
 
         // Get the current battery level.
-        void getBatteryLevel();
+        int getBatteryLevel();
 
         // Start the battery capacity decrease thread.
         void startDecreaseBattery();
@@ -54,7 +55,7 @@ class Battery{
         void stopDecreaseBattery();
 
         // Get the battery temperature.
-        void getBatteryTemperature();
+        int getBatteryTemperature();
 
         // Start the random temperature.
         void startRandomTemperature();
@@ -69,7 +70,7 @@ class Battery{
         void setFanMode(int batteryTemperature);
 
         // Get the fan mode status.
-        bool getfanMode();
+        bool getFanMode();
 };
 
 // Enumerate type for turn signals.
@@ -115,7 +116,7 @@ class MainMenu{
         bool getStartUp();
 
         // Set the speed of the vehicle.
-        void setSpeed();
+        void setSpeed(int speed);
 
         // Get the current speed of the vehicle.
         int getSpeed();

@@ -17,9 +17,20 @@
  *              The program uses threads to handle user input and continuously update and display motorcycle
  *              data on the screen.
  */
-#include "header/electricity_motorcycle.h"
-
+#include "electricity_motorcycle.h"
+	
 int main(){
-    
+    MainMenu menu;
+	char key = ' ';
+	bool exitProgram = false;
+
+	// Create two threads to handle user input and display data
+	thread inputThread(&getInput, ref(exitProgram), ref(key));
+	thread displayDataThread(&displayData, ref(exitProgram), ref(key), ref(menu));
+
+	// Wait for the threads to finish
+	displayDataThread.join();
+	inputThread.join();
+	
     return 0;
 }
