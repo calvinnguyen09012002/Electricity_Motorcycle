@@ -2,19 +2,21 @@
 
 ### List of contents
 
-[I. Introduction](#Modau)
+[I. Introduction](#Intro)
 
-[II. Description](#ngonngumarkdown)
+[II. Description](#Desciption)
+
+[III. Build](#Build)
 		
 ===========================
 
-<a name="Modau"></a>
+<a name="Intro"></a>
 ## I. Introduction
 
 This program simulates an electric motorcycle's dashboard display and user interaction.
 It provides a menu for the user to control various aspects of the motorcycle
 
-<a name="ngonngumarkdown"></a>
+<a name="Desciption"></a>
 ## II. Desciption
 There are some requirements
 
@@ -65,4 +67,12 @@ For example, start motorcycle and turn left
     Start : ON
 ```
 
-
+<a name="Build"></a>
+## III. Build
+```
+    mkdir build
+    cd build
+    cmake ..
+    make
+    ./electricity_motorcycle_app
+```
