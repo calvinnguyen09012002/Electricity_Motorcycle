@@ -17,7 +17,6 @@
 #include <random>
 #include <iomanip> // Set space width.
 #include <mutex>
-#include <atomic>
 
 using namespace std;
 

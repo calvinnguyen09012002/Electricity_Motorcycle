@@ -267,11 +267,10 @@ Battery::~Battery(){
  *   None
  */
  void MainMenu::leftTurn(){
-    for(int i=0; i<3; i++){
-        for(int j = 3; j>i; j--){
-            cout<<"*";
+    for (int i = 0; i < 3; i++) {
+        for (int j = 3; j > i; j--) {
+            mvprintw(i, 3 - j, "*"); // In dấu '*' tại vị trí (i, 3 - j)
         }
-        cout<<endl;
     }
  }
 
@@ -285,17 +284,20 @@ Battery::~Battery(){
  *   None
  */
  void MainMenu::rightTurn(){
-    for(int i=0; i<3; i++){
-        cout<<setw(24)<<setfill(' ');
-        for(int k=0; k<i; k++){
-            cout<< " ";
-        }
+   int height = 3;
 
-        for(int j=0; j>i; j--){
-            cout<<"*";
-        }
-        cout<<endl;
-    }
+   for (int i = 0; i < height; i++) {
+      mvprintw(i, 0, "%*s", 24, ""); 
+
+      for (int k = 0; k < i; k++) {
+         mvprintw(i, 24 + k, " ");
+      }
+
+      for (int j = 0; j < height - i; j++) {
+         mvprintw(i, 24 + i + j, "*");
+      }
+
+   }
  }
 
 /*
@@ -308,15 +310,17 @@ Battery::~Battery(){
  *   None
  */
  void MainMenu::offTurn(){
-    cout<<"---"
-            <<"/"<<setw(20)<<"\\"
-            <<"---"<<endl;
-    cout<<"|"<<setw(2)<<"/"<<setw(22)<<"\\"
-            <<" "
-            <<"|"<<endl;
-    cout<<"|"
-            <<"/"<<setw(24)<<"\\"
-            <<"|"<<endl;
+   mvprintw(1, 0, "---");
+   mvprintw(1, 3, "/%*s\\", 20, "");
+   mvprintw(1, 25, "---");
+
+   mvprintw(2, 0, "|%*s/", 2, "");
+   mvprintw(2, 2, "/%*s\\ ", 22, ""); 
+   mvprintw(2, 27, "|");
+
+   mvprintw(3, 0, "|");
+   mvprintw(3, 1, "/%*s\\", 24, "");
+   mvprintw(3, 27, "|");
  }
 
 /*
@@ -426,19 +430,20 @@ Battery::~Battery(){
  *   None
  */
  void MainMenu::startMenu(){
-	string dashes(28, '-');
+   string dashes(28, '-');
 	string asterisks(4, '*');
+   clear();
 	turnSignal();
-	cout << asterisks << "ELECTRIC MOTORCYCLE" << asterisks <<endl;
-	cout << dashes << endl;
-	cout << "Battery temperature: ----" << endl;
-	cout << "Battery level: ----" << endl;
-	cout << "Turn signal: ----" << endl;
-	cout << "Fan mode: ----" << endl;
-	cout << "Speed: ----" << endl;
-	cout << dashes << endl;
-	cout << "Start : OFF" << endl;
- 
+   mvprintw(4, 0, "%sELECTRIC MOTORCYCLE%s", asterisks.c_str(), asterisks.c_str());
+	mvprintw(5, 0, "%s", dashes.c_str());
+   mvprintw(6, 0, "Battery temperature: ----");
+   mvprintw(7, 0, "Battery level: ----");
+   mvprintw(8, 0, "Turn signal: ----");
+   mvprintw(9, 0, "Fan mode: ----");
+   mvprintw(10, 0, "Speed: ----");
+   mvprintw(11, 0, "%s", dashes.c_str());
+   mvprintw(12, 0, "Start : OFF");
+   refresh();
  }
 
 /*
@@ -454,28 +459,25 @@ Battery::~Battery(){
 	if (getStartUp())
 	{     
 		string dashes(28, '-');
-		string asterisks(4, '*');
+      string asterisks(4, '*');
+      clear();
 		turnSignal();
-		cout << asterisks << "ELECTRIC MOTORCYCLE" << asterisks << endl;
-		cout << dashes << endl;
-		cout << "Battery temperature: " << battery.getBatteryTemperature() << endl;
-		cout << "Battery level: " << battery.getBatteryLevel() << endl;
-		if (signal == OFF)
-		{
-			cout << "Turn signal: OFF" << endl;
-		}
-		else if (signal == LEFT)
-		{
-			cout << "Turn signal: LEFT" << endl;
-		}
-		else if (signal == RIGHT)
-		{
-			cout << "Turn signal: RIGHT" << endl;
-		}
-		cout << "Fan mode: " << (battery.getFanMode() ? "ON" : "OFF") << endl;
-		cout << "Speed: " << speed << endl;
-		cout << dashes << endl;
-		cout << "Start : ON" << endl;
+		mvprintw(4, 0, "%sELECTRIC MOTORCYCLE%s", asterisks.c_str(), asterisks.c_str());
+      mvprintw(5, 0, "%s", dashes.c_str());
+      mvprintw(6, 0, "Battery temperature: %d", battery.getBatteryTemperature());
+      mvprintw(7, 0, "Battery level: %d", battery.getBatteryLevel());
+      if (signal == OFF) {
+         mvprintw(8, 0, "Turn signal: OFF");
+      } else if (signal == LEFT) {
+         mvprintw(8, 0, "Turn signal: LEFT");
+      } else if (signal == RIGHT) {
+         mvprintw(8, 0, "Turn signal: RIGHT");
+      }
+      mvprintw(9, 0, "Fan mode: %s", (battery.getFanMode() ? "ON" : "OFF"));
+      mvprintw(10, 0, "Speed: %d", speed);
+      mvprintw(11, 0, "%s", dashes.c_str());
+      mvprintw(12, 0, "Start : ON");
+      refresh();
 	}
 	else
 	{
@@ -540,21 +542,16 @@ Battery::~Battery(){
  *   None
  */
  void getInput(bool &exitProgram, char &key){
-   while (!exitProgram){
-      input.lock();
-      initscr(); // Initialize ncurses
-      noecho(); // Turn off echoing
-      cbreak(); // Disable line buffering
-      cout << "\x1B[2J\x1B[H"; // Clear screen
+   input.lock();
+   while (!exitProgram){   
       key = getch();      
       if (key == '0') {
          cout << endl;
          cout << "The program has exited." << endl;
          exitProgram = true; // Set exit flag to true
-      }
-      endwin(); // End ncurses mode
-      input.unlock();
+      }       
    }
+   input.unlock();
 }
 
 /*
@@ -570,7 +567,6 @@ Battery::~Battery(){
 void displayData(bool &exitProgram, char &key, MainMenu &menu){
 	while (!exitProgram){
 		display.lock();
-		cout << "\x1B[2J\x1B[H"; // Clear screen
 		menu.executeMenu(key);
 		menu.displayMenu();
 		key = ' ';

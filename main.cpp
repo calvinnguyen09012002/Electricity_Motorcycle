@@ -23,6 +23,9 @@ int main(){
     MainMenu menu;
 	char key = ' ';
 	bool exitProgram = false;
+	initscr(); // Khởi tạo ncurses
+    noecho();
+    cbreak();
 
 	// Create two threads to handle user input and display data
 	thread inputThread(&getInput, ref(exitProgram), ref(key));
@@ -32,5 +35,6 @@ int main(){
 	displayDataThread.join();
 	inputThread.join();
 	
+	endwin(); // Kết thúc chế độ ncurses
     return 0;
 }
